@@ -5,48 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>اردو اے آئی دوست - لائیو امپیکٹ ڈیش بورڈ</title>
     
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Google Fonts: Noto Nastaliq Urdu -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        brand: {
-                            dark: '#1e3a8a', 
-                            primary: '#0f766e', 
-                            accent: '#f59e0b', 
-                            bg: '#fffbeb', 
-                        }
-                    },
-                    fontFamily: {
-                        urdu: ['"Noto Nastaliq Urdu"', 'serif'],
-                    }
+                    colors: { brand: { dark: '#1e3a8a', primary: '#0f766e', accent: '#f59e0b', bg: '#fffbeb' } },
+                    fontFamily: { urdu: ['"Noto Nastaliq Urdu"', 'serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        body {
-            font-family: 'Noto Nastaliq Urdu', serif;
-            background-color: #fffbeb; 
-            color: #1f2937;
-            line-height: 2.2; 
-        }
+        body { font-family: 'Noto Nastaliq Urdu', serif; background-color: #fffbeb; color: #1f2937; line-height: 2.2; }
         .chart-container { position: relative; width: 100%; height: 320px; }
         .card { background: white; border-radius: 1.5rem; padding: 2rem; border-top: 6px solid #1e3a8a; transition: all 0.3s; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); height: 100%; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
         #loader { position: fixed; inset: 0; background: #fffbeb; display: flex; align-items: center; justify-content: center; z-index: 1000; }
-        /* Adjusted width here to prevent text cutting */
-        select { border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: white; font-weight: bold; cursor: pointer; font-size: 1.1rem; padding: 8px 35px; border-radius: 99px; outline: none; appearance: none; min-width: 180px; text-align: center; }
+        select { border: 2px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.2); color: white; font-weight: bold; cursor: pointer; font-size: 1.1rem; padding: 8px 35px; border-radius: 99px; outline: none; appearance: none; min-width: 250px; text-align: center; }
         option { color: black; }
         .stat-value { font-size: 4.5rem; font-weight: 900; line-height: 1; margin-bottom: 0.5rem; }
         .roadmap-item { border-right: 4px solid #f59e0b; padding-right: 15px; margin-bottom: 15px; }
@@ -54,7 +34,6 @@
 </head>
 <body class="antialiased min-h-screen">
 
-    <!-- Loading Screen -->
     <div id="loader">
         <div class="text-center">
             <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-brand-dark border-solid mx-auto"></div>
@@ -62,22 +41,19 @@
         </div>
     </div>
 
-    <!-- Header -->
-    <header class="bg-brand-dark text-white py-12 shadow-lg border-b-4 border-brand-accent relative overflow-hidden text-center">
-        <div class="container mx-auto px-4 relative z-10">
+    <header class="bg-brand-dark text-white py-12 shadow-lg border-b-4 border-brand-accent text-center">
+        <div class="container mx-auto px-4">
             <h1 class="text-4xl md:text-6xl font-bold text-brand-accent mb-6">اردو اے آئی دوست، خانیوال</h1>
-            <p class="text-blue-200 mb-8 max-w-2xl mx-auto text-lg">خانیوال میں اردواے آئی انقلاب کی لائیو رپورٹ</p>
+            <p class="text-blue-200 mb-8 max-w-2xl mx-auto text-lg">خانیوال میں اردو اے آئی انقلاب کی لائیو رپورٹ</p>
             <div class="inline-flex items-center bg-white/10 p-2 px-8 rounded-full border border-white/20 backdrop-blur-md">
-                <span class="ml-4 text-lg text-white">منتخب مہینہ:</span>
-                <select id="monthSelect" onchange="updateDashboard()">
-                    <!-- Months filled by JS -->
-                </select>
+                <span class="ml-4 text-lg text-white">منتخب ڈیٹا:</span>
+                <select id="monthSelect" onchange="updateDashboard()"></select>
             </div>
         </div>
     </header>
 
     <main class="container mx-auto px-4 py-12 space-y-12">
-        <!-- KPI Cards -->
+        <!-- Stats Row -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="card text-center border-t-brand-dark flex flex-col justify-between">
                 <div>
@@ -89,21 +65,18 @@
                     <span id="stat-female" class="text-pink-600">خواتین: 0</span>
                 </div>
             </div>
-
             <div class="card border-t-teal-600">
                 <h3 class="text-gray-500 font-bold mb-6 text-center text-xl">تحصیلی تقسیم</h3>
                 <div id="tehsil-list" class="space-y-4"></div>
             </div>
-
             <div class="card text-center border-t-purple-600 flex flex-col justify-center">
                 <h3 class="text-gray-500 font-bold mb-4 text-xl">سب سے بڑا ذریعہ</h3>
                 <p id="stat-top-source" class="text-4xl font-black text-purple-700 leading-tight">...</p>
                 <div id="stat-source-val" class="mt-4 inline-block bg-purple-100 text-purple-700 px-8 py-2 rounded-full font-bold text-2xl">0</div>
-                <p class="mt-3 text-sm text-gray-400">سوشل پروف</p>
             </div>
         </section>
 
-        <!-- Charts -->
+        <!-- Charts Row -->
         <section class="grid grid-cols-1 lg:grid-cols-2 gap-10">
             <div class="card border-t-orange-500">
                 <h3 class="text-2xl font-bold text-brand-dark mb-8 border-r-4 border-brand-accent pr-4">پیشہ ورانہ تقسیم</h3>
@@ -136,32 +109,11 @@
             </div>
         </section>
 
-        <!-- Road Map Section (RE-ADDED) -->
+        <!-- Road Map Section -->
         <section class="space-y-8 text-right">
             <h2 class="text-4xl font-black text-brand-dark border-b-4 border-brand-accent inline-block pb-2 pr-2">مستقبل کا روڈ میپ (Road Map)</h2>
             <div class="card border-t-orange-600 bg-gradient-to-l from-white to-orange-50/30">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                    <div class="space-y-6">
-                        <div class="roadmap-item">
-                            <h4 class="font-bold text-xl text-brand-dark">02 مارچ: اسپارک (SPARK) این جی او</h4>
-                            <p class="text-gray-600">مکمل اسٹاف کی اے آئی ٹریننگ کا انعقاد۔</p>
-                        </div>
-                        <div class="roadmap-item border-brand-primary">
-                            <h4 class="font-bold text-xl text-brand-dark">03 مارچ: سی ای او آفس اسٹاف</h4>
-                            <p class="text-gray-600">پہلے مرحلے کے تحت آفس اسٹاف کی تربیت۔</p>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="roadmap-item border-purple-600">
-                            <h4 class="font-bold text-xl text-brand-dark">مارچ کا ہدف: تعلیمی قیادت</h4>
-                            <p class="text-gray-600">DEOs، AEOs اور اسکول ہیڈز کے لیے 06 بڑے سیشنز۔</p>
-                        </div>
-                        <div class="p-6 bg-brand-dark text-white rounded-2xl text-center">
-                            <p class="text-sm opacity-80">ماہانہ ہدف</p>
-                            <p class="text-3xl font-bold">150+ شرکاء</p>
-                        </div>
-                    </div>
-                </div>
+                <div id="roadmap-list" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
             </div>
         </section>
     </main>
@@ -173,6 +125,7 @@
     <script>
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKfBPc6MvW96HhRizkxfYeKBuD3KWqD2mnHVYb1k_400iL7Rit-o8JqAN5lpTtdekp/exec";
         let fullData = {};
+        let cumulativeData = null;
         let charts = {};
 
         function parseSheetData(str) {
@@ -198,6 +151,12 @@
             return obj;
         }
 
+        function mergeObjects(target, source) {
+            for (const key in source) {
+                if (typeof source[key] === 'number') target[key] = (target[key] || 0) + source[key];
+            }
+        }
+
         function getVal(row, possibleKeys) {
             for (let key of possibleKeys) {
                 const found = Object.keys(row).find(k => k.toLowerCase().replace(/\s/g, '') === key.toLowerCase().replace(/\s/g, ''));
@@ -210,27 +169,38 @@
             try {
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
-                data.forEach(row => {
-                    const mKey = getVal(row, ["Month", "month", "مہینہ"]) || "فروری 2026";
-                    const sources = parseSheetData(getVal(row, ["SourceData", "SourceReach", "ذرائع"]));
-                    let topSource = "N/A", topSrcVal = 0;
-                    Object.entries(sources).forEach(([s, v]) => { if (v > topSrcVal) { topSrcVal = v; topSource = s; } });
+                cumulativeData = { total: 0, male: 0, female: 0, tehsils: {}, profs: {}, sources: {}, edu: "مجموعی اثرات یہاں نظر آئیں گے۔", gov: "مجموعی سرکاری اثرات یہاں نظر آئیں گے۔", roadmap: "فروری کے ڈیٹا کے مطابق روڈ میپ سیٹ ہے۔" };
 
-                    fullData[mKey] = {
-                        total: getVal(row, ["Total", "total", "کل"]) || 0,
-                        male: getVal(row, ["Male", "male", "مرد"]) || 0,
-                        female: getVal(row, ["Female", "female", "خواتین"]) || 0,
-                        tehsils: parseSheetData(getVal(row, ["TehsilData", "Tehsil", "تحصیل"])),
-                        topSource: topSource,
-                        topSourceVal: topSrcVal,
-                        profs: parseSheetData(getVal(row, ["Profession", "ProfessionData", "پیشہ"])),
-                        sources: sources,
-                        edu: getVal(row, ["EduImpact", "Edu Impact", "تعلیمی اثرات"]) || "30 اساتذہ کی تربیت سے ہزاروں طلباء تک اے آئی کی منتقلی کا آغاز ہو چکا ہے۔",
-                        gov: getVal(row, ["GovImpact", "Gov Impact", "سرکاری اثرات"]) || "سی ای او ایجوکیشن کے ساتھ طویل مدتی اشتراک سے سرکاری اسکولوں میں تبدیلی آ رہی ہے۔"
+                data.forEach(row => {
+                    const mKey = getVal(row, ["Month", "month", "مہینہ"]) || "نامعلوم";
+                    const tehsils = parseSheetData(getVal(row, ["TehsilData", "Tehsil", "تحصیل"]));
+                    const profs = parseSheetData(getVal(row, ["ProfessionData", "Profession", "پیشہ"]));
+                    const sources = parseSheetData(getVal(row, ["SourceData", "SourceReach", "ذرائع"]));
+                    
+                    const mData = {
+                        total: parseInt(getVal(row, ["Total", "total", "کل"])) || 0,
+                        male: parseInt(getVal(row, ["Male", "male", "مرد"])) || 0,
+                        female: parseInt(getVal(row, ["Female", "female", "خواتین"])) || 0,
+                        tehsils, profs, sources,
+                        edu: getVal(row, ["EduImpact", "Edu Impact", "تعلیمی اثرات"]),
+                        gov: getVal(row, ["GovImpact", "Gov Impact", "سرکاری اثرات"]),
+                        roadmap: getVal(row, ["Roadmap", "road map", "روڈ میپ"])
                     };
+                    fullData[mKey] = mData;
+
+                    cumulativeData.total += mData.total;
+                    cumulativeData.male += mData.male;
+                    cumulativeData.female += mData.female;
+                    mergeObjects(cumulativeData.tehsils, tehsils);
+                    mergeObjects(cumulativeData.profs, profs);
+                    mergeObjects(cumulativeData.sources, sources);
+                    if(mData.roadmap) cumulativeData.roadmap = mData.roadmap;
                 });
-                const months = Object.keys(fullData);
-                document.getElementById('monthSelect').innerHTML = months.map(m => `<option value="${m}">${m}</option>`).join('');
+
+                const select = document.getElementById('monthSelect');
+                select.innerHTML = `<option value="ALL">مجموعی رپورٹ (All Time)</option>` + 
+                                  Object.keys(fullData).map(m => `<option value="${m}">${m}</option>`).join('');
+                
                 updateDashboard();
                 document.getElementById('loader').style.display = 'none';
             } catch (err) {
@@ -240,24 +210,36 @@
         }
 
         function updateDashboard() {
-            const month = document.getElementById('monthSelect').value;
-            const d = fullData[month];
+            const val = document.getElementById('monthSelect').value;
+            const d = (val === "ALL") ? cumulativeData : fullData[val];
             if (!d) return;
 
             document.getElementById('stat-total').innerText = d.total;
             document.getElementById('stat-male').innerText = `مرد: ${d.male}`;
             document.getElementById('stat-female').innerText = `خواتین: ${d.female}`;
-            document.getElementById('stat-top-source').innerText = d.topSource;
-            document.getElementById('stat-source-val').innerText = d.topSourceVal;
-            document.getElementById('text-edu').innerText = d.edu;
-            document.getElementById('text-gov').innerText = d.gov;
+            
+            let topSrc = "N/A", topSrcVal = 0;
+            Object.entries(d.sources).forEach(([s, v]) => { if (v > topSrcVal) { topSrcVal = v; topSrc = s; } });
+            document.getElementById('stat-top-source').innerText = topSrc;
+            document.getElementById('stat-source-val').innerText = topSrcVal;
+
+            document.getElementById('text-edu').innerText = d.edu || "ڈیٹا موجود نہیں۔";
+            document.getElementById('text-gov').innerText = d.gov || "ڈیٹا موجود نہیں۔";
 
             document.getElementById('tehsil-list').innerHTML = Object.entries(d.tehsils).map(([name, val]) => `
                 <div class="flex justify-between items-center p-4 bg-gray-50 rounded-2xl border-r-8 border-brand-primary shadow-sm">
                     <span class="font-bold text-lg">${name}</span>
                     <span class="font-black text-brand-primary text-2xl">${val}</span>
                 </div>
-            `).join('') || "<p class='text-center text-gray-400'>ڈیٹا غائب ہے</p>";
+            `).join('');
+
+            const rData = d.roadmap || "02 مارچ: اسپارک ٹریننگ | 03 مارچ: سی ای او سیشن | ہدف: 150 شرکاء";
+            document.getElementById('roadmap-list').innerHTML = rData.split('|').map(item => `
+                <div class="roadmap-item">
+                    <h4 class="font-bold text-xl text-brand-dark">${item.split(':')[0]}</h4>
+                    <p class="text-gray-600">${item.split(':')[1] || ""}</p>
+                </div>
+            `).join('');
 
             renderCharts(d);
         }
@@ -267,39 +249,24 @@
             if (charts.prof) charts.prof.destroy();
             if (charts.source) charts.source.destroy();
 
-            // Profession Chart
             charts.prof = new Chart(document.getElementById('professionChart'), {
                 type: 'bar',
                 data: {
                     labels: Object.keys(d.profs),
-                    datasets: [{ data: Object.values(d.profs), backgroundColor: colors, borderRadius: 12, barThickness: 40 }]
+                    datasets: [{ data: Object.values(d.profs), backgroundColor: colors, borderRadius: 12 }]
                 },
-                options: { 
-                    responsive: true, maintainAspectRatio: false, 
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: true, position: 'right' } }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, position: 'right' } } }
             });
 
-            // Source Chart - Updated to include numbers in labels
-            const sourceLabelsWithNumbers = Object.entries(d.sources).map(([name, val]) => `${name} (${val})`);
-            
             charts.source = new Chart(document.getElementById('sourceChart'), {
                 type: 'doughnut',
                 data: {
-                    labels: sourceLabelsWithNumbers,
-                    datasets: [{ data: Object.values(d.sources), backgroundColor: colors, borderWidth: 0, hoverOffset: 20 }]
+                    labels: Object.entries(d.sources).map(([n, v]) => `${n} (${v})`),
+                    datasets: [{ data: Object.values(d.sources), backgroundColor: colors, borderWidth: 0 }]
                 },
-                options: {
-                    responsive: true, maintainAspectRatio: false,
-                    cutout: '65%',
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { font: { size: 13, family: 'Noto Nastaliq Urdu' }, padding: 15 } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { font: { family: 'Noto Nastaliq Urdu' } } } } }
             });
         }
-
         window.onload = init;
     </script>
 </body>
