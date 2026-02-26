@@ -182,8 +182,8 @@
                         male: parseInt(getVal(row, ["Male", "male", "مرد"])) || 0,
                         female: parseInt(getVal(row, ["Female", "female", "خواتین"])) || 0,
                         tehsils, profs, sources,
-                        edu: getVal(row, ["EduImpact", "Edu Impact", "تعلیمی اثرات"]),
-                        gov: getVal(row, ["GovImpact", "Gov Impact", "سرکاری اثرات"]),
+                        edu: row["EduImpact"] || row["EduImpact "] || "",
+                        gov: row["GovImpact"] || row["GovImpact "] || "",
                         roadmap: getVal(row, ["Roadmap", "road map", "روڈ میپ"])
                     };
                     fullData[mKey] = mData;
