@@ -95,7 +95,7 @@
                 <div class="card border-t-blue-500">
                     <div class="flex items-center gap-4 mb-6">
                         <div class="bg-blue-100 p-4 rounded-2xl text-3xl">🎓</div>
-                        <h2 class="text-2xl font-bold text-blue-800">تعلیمی شعبہ</h2>
+                        <h2 class="text-2xl font-bold text-blue-800">مجموعی اثرات</h2>
                     </div>
                     <p id="text-edu" class="text-gray-700 text-lg leading-relaxed italic">لوڈ ہو رہا ہے...</p>
                 </div>
@@ -182,7 +182,7 @@
                         male: parseInt(getVal(row, ["Male", "male", "مرد"])) || 0,
                         female: parseInt(getVal(row, ["Female", "female", "خواتین"])) || 0,
                         tehsils, profs, sources,
-                        edu: row["EduImpact"] || row["EduImpact "] || "",
+                        edu: getVal(row, ["AllEffect", "All Effect", "مجموعی اثرات"]),
                         gov: row["GovImpact"] || row["GovImpact "] || "",
                         roadmap: getVal(row, ["Roadmap", "road map", "روڈ میپ"])
                     };
